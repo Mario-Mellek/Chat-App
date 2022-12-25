@@ -7,18 +7,18 @@ module.exports.register = async (req, res, next) => {
   try {
     const usernameExists = await User.findOne({ username });
     if (usernameExists) {
-      console.log('be Creative! \n Username Already exists.');
+      console.log('Username Already exists.');
       res.json({
-        message: 'be Creative! \n Username Already exists.',
+        message: 'Username Already exists.',
         status: false,
       });
       return;
     }
     const emailExists = await User.findOne({ email });
     if (emailExists) {
-      console.log('Hold on! I know you!! \n E-mail Already exists');
+      console.log('E-mail Already exists');
       res.json({
-        message: 'Hold on! I know you!! \n E-mail Already exists',
+        message: 'E-mail Already exists',
         status: false,
       });
       return;

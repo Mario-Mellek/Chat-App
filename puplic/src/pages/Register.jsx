@@ -33,6 +33,14 @@ function Register() {
         email,
         password
       })
+      if (data.message) {
+        toast.info(data.message, toastOptions)
+      } else {
+        toast.info(`Welcome ${username}, You have registered successfully`, toastOptions)
+        setTimeout(() => {
+          document.write("consider yourself logged in for now")
+        }, 4000);
+      }
     }
   }
 

@@ -1,8 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Chat() {
     return (
-        <div>Chat</div>
+        <>
+            Chat <br />
+            <Link to="/Register">Register</Link>
+        </>
     )
 }
 
