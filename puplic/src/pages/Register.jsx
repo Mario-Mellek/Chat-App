@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import styled from "styled-components";
 import welcomeImage from "../assets/welcome.gif"
@@ -24,6 +24,8 @@ function Register() {
     theme: "dark",
   }
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (handleValidation()) {
@@ -33,12 +35,13 @@ function Register() {
         email,
         password
       })
-      if (data.message) {
+      if (data.status === false) {
         toast.info(data.message, toastOptions)
       } else {
+        localStorage.setItem("Application User", JSON.stringify(data.user));
         toast.info(`Welcome ${username}, You have registered successfully`, toastOptions)
         setTimeout(() => {
-          document.write("consider yourself logged in for now")
+          navigate("/")
         }, 4000);
       }
     }
