@@ -19,12 +19,25 @@ function Register() {
   const toastOptions = {
     position: "bottom-right",
     autoClose: 3000,
-    pauseOnHover: true,
+    pauseOnHover: false,
     draggable: true,
     theme: "dark",
   }
 
   const navigate = useNavigate();
+
+  const location = async () => {
+    const API = import.meta.env.VITE_API;
+    const key = import.meta.env.VITE_KEY;
+    const response = await axios.get(`${API}?key=${key}`);
+    const { city, country, latitude, longitude } = response.data.location
+    return (`${city} ${country.name} ${latitude} ${longitude}`)
+  };
+
+  function speak(text) {
+    let say = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(say);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,13 +46,15 @@ function Register() {
       const { data } = await axios.post(registerRoute, {
         username,
         email,
-        password
+        password,
+        userLocation: await location(),
       })
       if (data.status === false) {
         toast.info(data.message, toastOptions)
       } else {
         localStorage.setItem("Application User", JSON.stringify(data.user));
-        toast.info(`Welcome ${username}, You have registered successfully`, toastOptions)
+        speak(`Welcome ${username}, You've registered successfully`)
+        toast.info(`Welcome ${username}, You've registered successfully`, toastOptions)
         setTimeout(() => {
           navigate("/")
         }, 4000);
@@ -144,6 +159,7 @@ form{
     color: white;
     width: 100%;
     text-align: center;
+    align-self: center;
     font-size: 1rem;
     transition: all 0.5s ease-in-out;
     &:focus{
@@ -183,6 +199,53 @@ span{
     cursor: pointer;
 }
 }
+}
+@media only screen and (max-width: 600px) {
+  form {
+    height: fit-content;
+    width: 90%;
+    margin-top: 0px;
+    padding-top: 0px;
+    img{
+      margin-top: 20px;
+      width: 100%;
+    }
+    input{
+      align-self: center;
+      width: 140%;
+    }
+  }
+}
+@media only screen and (600px < width < 1200px) {
+  form {
+    height: fit-content;
+    max-width: 80%;
+    margin-top: 0px;
+    padding-top: 0px;
+    margin-bottom: 50px;
+    img{
+      margin-top: 20px;
+      width: 100%;
+    }
+    input{
+      align-self: center;
+    }
+  }
+}
+@media only screen and ( 1200px < width < 1500px) {
+  form {
+    height: fit-content;
+    max-width: 90%;
+    margin-top: 0px;
+    padding-top: 0px;
+    img{
+      width: 100%;
+      margin-top: 20px;
+    }
+    input{
+      align-self: center;
+    }
+  }
 }
 `
 

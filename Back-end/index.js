@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./src/routes/userRoutes');
 
 require('dotenv').config();
 const cors = require('cors');
@@ -32,5 +32,5 @@ mongoose
   });
 
 app.listen(port, () => {
-  console.log(`server connected on ${port}`);
+  console.log(`server connected on port ${port}`);
 });

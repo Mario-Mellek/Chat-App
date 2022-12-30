@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: new Date(),
   },
+  userLocation: String,
 });
 
 module.exports = mongoose.model('Users', userSchema);

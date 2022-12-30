@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 module.exports.register = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, userLocation } = req.body;
   try {
     const usernameExists = await User.findOne({ username });
     if (usernameExists) {
@@ -31,6 +31,7 @@ module.exports.register = async (req, res, next) => {
       username,
       email,
       password: hashedPW,
+      userLocation,
     });
     delete user.password;
     console.log(`User Created successfully \n ${user}`);
