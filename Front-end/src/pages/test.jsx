@@ -15,18 +15,18 @@ function Test() {
         setIsMoving(true);
     }
 
-    function drawCircles() {
+    function drawEmoji() {
         const img = '😀';
 
         for (let i = 0; i < 20; i++) {
             trailRefs.current.push(React.createRef());
         }
 
-        return [...Array(20)].map((item, index) => {
-            const ease = index * 0.04;
+        return [...Array(20)].map((_item, index) => {
+            const ease = index * 0.05;
             return (
                 <div key={index}
-                    style={{ position: "absolute", transition: `transform ${ease}s` }}
+                    style={{ margin: 10, position: "absolute", transition: `transform ${ease}s` }}
                     ref={trailRefs.current[index]}
                 >
                     {img}
@@ -39,7 +39,8 @@ function Test() {
         for (let i = 0; i < 20; i++) {
             const xpos = lastMousePosition.current.x;
             const ypos = lastMousePosition.current.y;
-            trailRefs.current[i].current.style.transform = `translate(${xpos}px, ${ypos}px)`;
+            if (trailRefs.current[i].current)
+                trailRefs.current[i].current.style.transform = `translate(${xpos}px, ${ypos}px)`;
         }
     }
 
@@ -50,14 +51,10 @@ function Test() {
             }
             updateCollectedLettersPosition();
         }
-
-        // cancel the existing rAF
         cancelAnimationFrame(rAFIndex.current);
-
         document.addEventListener("mousemove", startMove);
         document.addEventListener("mousemove", registerMousePosition);
         rAFIndex.current = requestAnimationFrame(update);
-
         return () => {
             document.removeEventListener("mousemove", registerMousePosition);
             document.removeEventListener("mousemove", startMove);
@@ -67,8 +64,7 @@ function Test() {
     return (
         <>
             <div className="App">
-                <div>Move the Mouse</div>
-                <div>{drawCircles()}</div>
+                <div>{drawEmoji()}</div>
 
             </div>
         </>

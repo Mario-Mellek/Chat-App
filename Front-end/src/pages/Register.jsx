@@ -6,8 +6,10 @@ import welcomeImage from "../assets/welcome.gif"
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { registerRoute } from "../utils/APIRoutes";
+import Test from "./test";
 
 function Register() {
+  let utter;
 
   const [values, setValues] = useState({
     username: "",
@@ -35,9 +37,10 @@ function Register() {
   };
 
   function speak(text) {
-    let say = new SpeechSynthesisUtterance(text);
-    speechSynthesis.speak(say);
+    utter = new SpeechSynthesisUtterance(text)
+    speechSynthesis.speak(utter);
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,14 +53,15 @@ function Register() {
         userLocation: await location(),
       })
       if (data.status === false) {
-        toast.info(data.message, toastOptions)
+        speak(data.message);
+        toast.info(data.message, toastOptions);
       } else {
         localStorage.setItem("Application User", JSON.stringify(data.user));
-        speak(`Welcome ${username}, You've registered successfully`)
-        toast.info(`Welcome ${username}, You've registered successfully`, toastOptions)
-        setTimeout(() => {
-          navigate("/")
-        }, 4000);
+        toast.info(`Welcome ${username}, You've registered successfully`, toastOptions);
+        speak(`Welcome ${username}, You've registered successfully`);
+        utter.addEventListener('end', () => {
+          navigate('/')
+        })
       }
     }
   }
@@ -87,6 +91,7 @@ function Register() {
 
   return (
     <>
+      <Test />
       <FormContainer>
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="welcome">
