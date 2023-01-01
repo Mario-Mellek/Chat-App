@@ -7,6 +7,11 @@ function Chat() {
         <>
             <Test />
             Chat <br />
+            <button onClick={() => {
+                localStorage.clear();
+                console.log('Logged out');
+            }}>Log out</button>
+            <br />
             <Link to="/Register">Register</Link>
         </>
     )

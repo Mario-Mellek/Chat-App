@@ -2,7 +2,7 @@ const User = require('../model/userModel');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
-module.exports.register = async (req, res, next) => {
+module.exports.register = async (req, res) => {
   const { username, email, password, userLocation } = req.body;
   try {
     const usernameExists = await User.findOne({ username });
@@ -33,8 +33,44 @@ module.exports.register = async (req, res, next) => {
       password: hashedPW,
       userLocation,
     });
+    console.log(user.password);
     delete user.password;
     console.log(`User Created successfully \n ${user}`);
+    return res.json({ status: true, user });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+module.exports.login = async (req, res) => {
+  const { username, password, userLocation } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      console.log('Incorrect Username');
+      res.json({
+        message: 'Incorrect Username or Password.',
+        status: false,
+      });
+      return;
+    }
+    const pepper = process.env.BCRYPT_PASSWORD;
+    const validPassword = bcrypt.compareSync(password + pepper, user.password);
+    if (!validPassword) {
+      console.log('Incorrect Password');
+      res.json({
+        message: 'Incorrect Username or Password.',
+        status: false,
+      });
+      return;
+    }
+    delete user.password;
+    console.log(`Logged in \n ${user}`);
+    console.log(`New Location: ${userLocation}`);
+    await User.findOneAndUpdate(
+      { username: username },
+      { userLocation: userLocation }
+    );
     return res.json({ status: true, user });
   } catch (error) {
     throw new Error(error);

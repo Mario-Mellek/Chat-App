@@ -27,6 +27,14 @@ function Register() {
   }
 
   const navigate = useNavigate();
+  useEffect(() => {
+    localStorage.getItem('Application User') ?
+      toast.info(`You're logged in already`, toastOptions) &
+      setTimeout(() => {
+        navigate('/')
+      }, 4000)
+      : null;
+  }, [])
 
   const location = async () => {
     const API = import.meta.env.VITE_API;
@@ -40,7 +48,6 @@ function Register() {
     utter = new SpeechSynthesisUtterance(text)
     speechSynthesis.speak(utter);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
