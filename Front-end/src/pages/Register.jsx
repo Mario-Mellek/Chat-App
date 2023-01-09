@@ -196,10 +196,13 @@ button{
   cursor: pointer;
   border-radius: 15px;
   text-transform: uppercase;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
   &:hover{
     background-color: #7e624e84;
     box-shadow: 20px 20px 40px black;
+  }
+  &:active{
+    background-color: #00000086;
   }
 }
 span{

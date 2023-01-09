@@ -76,3 +76,36 @@ module.exports.login = async (req, res) => {
     throw new Error(error);
   }
 };
+
+module.exports.setPic = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const profilePic = req.body.image;
+    const userData = await User.findByIdAndUpdate(userId, {
+      isProfilePicSet: true,
+      profilePic,
+    });
+    console.log(userData);
+    return res.json({
+      status: true,
+      message: 'Profile picture has been updated successfully',
+      image: userData.profilePic,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+module.exports.showAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.params.id } }).select([
+      'email',
+      'username',
+      'profilePic',
+      '_id',
+    ]);
+    return res.json({ users });
+  } catch (error) {
+    throw new Error(error);
+  }
+};

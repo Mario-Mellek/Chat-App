@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Chat from "./pages/Chat";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Test from "./pages/test";
+import SetProfilePic from "./pages/SetProfilePic";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/test" element={<Test />}></Route>
+                <Route path="/setPic" element={<SetProfilePic />} />
             </Routes>
         </BrowserRouter>
     )
