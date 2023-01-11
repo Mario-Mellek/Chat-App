@@ -81,13 +81,15 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 gap: 1rem;
-    .container{
+.container{
+        border-radius: 50px;
         height: 85%;
         width: 85%;
         border: 5px solid black;
         background-color: #25160a84;
         display: grid;
         grid-template-columns: 1fr 2fr ;
+        overflow: hidden;
     }
 `
 

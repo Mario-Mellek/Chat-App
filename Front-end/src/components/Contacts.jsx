@@ -6,6 +6,7 @@ export default function Contacts({ contacts, currentUser }) {
     const [currentUserName, setCurrentUserName] = useState(undefined)
     const [currentUserImage, setCurrentUserImage] = useState(undefined)
     const [currentlySelected, setCurrentlySelected] = useState(undefined)
+    const [min, setMin] = useState(false)
 
 
     useEffect(() => {
@@ -20,13 +21,20 @@ export default function Contacts({ contacts, currentUser }) {
     }, [currentUser])
 
     const changeChatWindow = (index, contact) => { }
+
+    const toggle = () => {
+        setMin((prev) => !prev);
+    }
+
     return (
         <>
             {
                 currentUser && Boolean(contacts[0]) && (
                     <>
                         <Container>
-                            <SideBar>
+                            <SideBar
+                                className={min ? 'min' : 'max'}
+                            >
                                 <h2>Chat App</h2>
                                 <br /><br />
                                 <div className="contacts">{
@@ -45,9 +53,9 @@ export default function Contacts({ contacts, currentUser }) {
                             </SideBar>
                         </Container>
                         <UserContainer>
-                            <div className="current-user">
+                            <div className={`current-user ${min ? 'big' : 'small'}`}>
                                 <div className="profile-pic">
-                                    <p>{currentUserName}</p>
+                                    <p onClick={toggle}>{currentUserName}</p>
                                     <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="Profile Picture" />
                                 </div>
                             </div>
@@ -55,15 +63,20 @@ export default function Contacts({ contacts, currentUser }) {
                     </>
                 ) || (
                     <>
-                        <SideBar>
-                            <h3>No users to chat with?</h3>
-                            <br /><br />
-                            <p> Start inviting friends</p>
-                        </SideBar>
+                        <Container>
+                            <SideBar
+                                className={min ? 'min' : 'max'}
+                            >
+                                <br /><br /><br />
+                                <h3>No users to chat with?</h3>
+                                <br /><br />
+                                <p> Start inviting your friends</p>
+                            </SideBar>
+                        </Container>
                         <UserContainer>
-                            <div className="current-user">
+                            <div className={`current-user ${min ? 'big' : 'small'}`}>
                                 <div className="profile-pic">
-                                    <p>{currentUserName}</p>
+                                    <p onClick={toggle}>{currentUserName}</p>
                                     <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="Profile Picture" />
                                 </div>
                             </div>
@@ -77,12 +90,11 @@ export default function Contacts({ contacts, currentUser }) {
 
 
 const SideBar = styled.div`
-/* display: none; */
 background-color: black;
 color: white;
 overflow-y: auto;
 height: 100%;
-
+border-radius: 2em;
 h2{
     width: 100%;
     position: sticky;
@@ -131,19 +143,78 @@ h2{
 const Container = styled.div`
 height: 100%;
 overflow: hidden;
+text-align: center;
+.min{
+    animation: scale-out 0.5s ease both;
+}
+.max{
+    animation: scale-in 0.5s ease both;
+}
+@keyframes scale-out {
+    0% {
+    transform: scaleY(1);
+    opacity: 1;
+    }
+    100% {
+    transform: scaleY(0);
+    opacity: 0;
+    display: none;
+    }
+}
+@keyframes scale-in {
+    0% {
+    transform: scaleY(0);
+    opacity: 0;
+    }
+    100% {
+    transform: scaleY(1);
+    opacity: 1;
+    }
+}
 `
 
 const UserContainer = styled.div`
+width: auto;
+.big{
+    animation: scale-up-right 0.5s ease-in-out both;
+    animation-delay: 0.3s;
+}
+.small{
+    animation: scale-in-h 0.5s ease both;
+    animation-delay: 0.3s;
+}
+@keyframes scale-up-right {
+    0% {
+    width: 0vw;
+    }
+    100% {
+    width: 100vw;
+    }
+}
 .current-user{
-    width: 100%;
     .profile-pic{
+    background-color: #00000050;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     justify-content: start;
     gap: 2em;
-    border-bottom: 3px solid black;
-    border-radius: 2em;
+    border-bottom: 2px solid black;
+    border-bottom-left-radius: 2em;
+    border-bottom-right-radius: 2em;
+    transition: all 0.4s linear;
+    animation: scale-in-h 0.5s ease both;
+    &:hover{
+        background-color: transparent;
+    }
+    @keyframes scale-in-h {
+        0%{
+            transform: scaleX(0);
+        }
+        100%{
+            transform: scaleX(1);
+        }
+    }
     p{
         margin-bottom: 0.5rem;
         text-align: center;
@@ -152,8 +223,13 @@ const UserContainer = styled.div`
         font-style: oblique;
         letter-spacing: 0.3em;
         text-transform: uppercase;
+        &:hover{
+            text-decoration: .1em underline;
+            cursor: pointer;
+        }
     }
     img{
+        margin-left: 0.5em;
         aspect-ratio: 1/1;
         width: 5rem;
         box-shadow: 10px 10px 90px 10px black;
