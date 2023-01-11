@@ -24,6 +24,12 @@ export default function SetProfilePic() {
         theme: "dark",
     }
 
+    let utter;
+    function speak(text) {
+        utter = new SpeechSynthesisUtterance(text)
+        speechSynthesis.speak(utter);
+    };
+
     useEffect(() => {
         async function fetchedPics() {
             const api = import.meta.env.VITE_IMG_API;
@@ -47,10 +53,11 @@ export default function SetProfilePic() {
             })
             if (await data.status === true) {
                 toast.info(`${data.message} Please log in`, toastOptions)
-                setTimeout(() => {
-                    navigate('/login')
+                speak(`${data.message}. Please log in`)
+                utter.addEventListener('end', () => {
                     localStorage.clear()
-                }, 4000)
+                    navigate('/login')
+                })
             } else {
                 toast.error("Couldn't save the profile pic, Please try again", toastOptions)
             }
