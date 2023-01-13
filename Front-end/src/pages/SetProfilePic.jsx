@@ -51,12 +51,15 @@ export default function SetProfilePic() {
             const { data } = await axios.post(`${setPicRoute}/${user._id}`, {
                 image: pics[selectedPic]
             })
-            if (await data.status === true) {
+            if (data.status === true) {
+                // user.profilePic = data.image
+                // user.isProfilePicSet = user.profilePic ? true : false;
+                // localStorage.setItem('Application User', JSON.stringify(user)) 
                 toast.info(`${data.message} Please log in`, toastOptions)
                 speak(`${data.message}. Please log in`)
                 utter.addEventListener('end', () => {
                     localStorage.clear()
-                    navigate('/login')
+                    navigate('/')
                 })
             } else {
                 toast.error("Couldn't save the profile pic, Please try again", toastOptions)
@@ -123,7 +126,7 @@ export default function SetProfilePic() {
 
 const Container = styled.div`
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -140,7 +143,7 @@ const Container = styled.div`
 .pics{
     display: grid;
     grid-template-columns:repeat(3, 1fr);
-    gap: 5rem;
+    grid-gap: 5rem;
     .pic{
         border: 1px solid transparent;
         padding: 0.5rem;
@@ -165,21 +168,29 @@ const Container = styled.div`
     }
 }
 button{
-  background-color: #00000086;
-  color: white;
-  font-size: larger;
-  padding: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 15px;
-  text-transform: uppercase;
-  transition: all 0.2s ease-in-out;
-  &:hover{
+background-color: #00000086;
+color: white;
+font-size: larger;
+padding: 1rem;
+font-weight: bold;
+cursor: pointer;
+border-radius: 15px;
+text-transform: uppercase;
+transition: all 0.2s ease-in-out;
+&:hover{
     background-color: #7e624e84;
     box-shadow: 20px 20px 40px black; 
-  }
-  &:active{
+    }
+    &:active{
     background-color: #00000086;
-  }
+    }
+}
+@media only screen and (max-width: 1200px){
+    text-align: center;
+    gap: 2rem;
+    .pics{
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5rem;
+}
 }
 `

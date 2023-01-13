@@ -9,6 +9,7 @@ import Test from "./test";
 function Chat() {
     const [contacts, setContacts] = useState([])
     const [currentUser, setCurrentUser] = useState(undefined)
+    const [currentChat, setCurrentChat] = useState(undefined)
 
     const navigate = useNavigate()
 
@@ -42,6 +43,11 @@ function Chat() {
         setPic()
     }, [currentUser])
 
+    const handleChatToggle = (contact) => {
+        setCurrentChat(contact)
+        console.log(contact)
+    }
+
     return (
         <>
             <Test />
@@ -66,6 +72,7 @@ function Chat() {
                     <Contacts
                         contacts={contacts}
                         currentUser={currentUser}
+                        toggleChat={handleChatToggle}
                     />
                 </div>
             </Conatiner>

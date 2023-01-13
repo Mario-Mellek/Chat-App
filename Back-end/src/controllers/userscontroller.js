@@ -79,8 +79,8 @@ module.exports.login = async (req, res) => {
 
 module.exports.setPic = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const profilePic = req.body.image;
+    const userId = await req.params.id;
+    const profilePic = await req.body.image;
     const userData = await User.findByIdAndUpdate(userId, {
       isProfilePicSet: true,
       profilePic,

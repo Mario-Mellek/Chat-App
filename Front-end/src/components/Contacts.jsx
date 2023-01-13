@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-export default function Contacts({ contacts, currentUser }) {
+export default function Contacts({ contacts, currentUser, toggleChat }) {
 
     const [currentUserName, setCurrentUserName] = useState(undefined)
     const [currentUserImage, setCurrentUserImage] = useState(undefined)
@@ -10,19 +10,21 @@ export default function Contacts({ contacts, currentUser }) {
 
 
     useEffect(() => {
-        (
-            currentUser ?
-                setCurrentUserImage(currentUser.profilePic)
-                &
-                setCurrentUserName(currentUser.username)
-                :
-                null
-        )
+        async function display() {
+            if (await currentUser) {
+                setCurrentUserImage(await currentUser.profilePic)
+                setCurrentUserName(await currentUser.username)
+            }
+        }
+        display()
     }, [currentUser])
 
-    const changeChatWindow = (index, contact) => { }
+    const changeChatWindow = (index, contact) => {
+        setCurrentlySelected(index)
+        toggleChat(contact)
+    }
 
-    const toggle = () => {
+    const toggleView = () => {
         setMin((prev) => !prev);
     }
 
@@ -35,14 +37,19 @@ export default function Contacts({ contacts, currentUser }) {
                             <SideBar
                                 className={min ? 'min' : 'max'}
                             >
-                                <h2>Chat App</h2>
+                                <h2
+                                    onClick={() => { setCurrentlySelected(undefined) }}
+                                >
+                                    Chat App
+                                </h2>
                                 <br /><br />
                                 <div className="contacts">{
                                     contacts.map((contact, index) => {
                                         return (
                                             <div
                                                 key={index}
-                                                className={`contact ${index === currentlySelected ? 'selected' : ''}`}
+                                                onClick={() => { changeChatWindow(index, contact) }}
+                                                className={`contact ${currentlySelected === index ? 'selected' : ''}`}
                                             >
                                                 <p>{contact.username}</p>
                                                 <img src={`data:image/svg+xml;base64,${contact.profilePic}`} alt="Profile Picture" />
@@ -55,7 +62,7 @@ export default function Contacts({ contacts, currentUser }) {
                         <UserContainer>
                             <div className={`current-user ${min ? 'big' : 'small'}`}>
                                 <div className="profile-pic">
-                                    <p onClick={toggle}>{currentUserName}</p>
+                                    <p onClick={toggleView}>{currentUserName}</p>
                                     <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="Profile Picture" />
                                 </div>
                             </div>
@@ -76,7 +83,7 @@ export default function Contacts({ contacts, currentUser }) {
                         <UserContainer>
                             <div className={`current-user ${min ? 'big' : 'small'}`}>
                                 <div className="profile-pic">
-                                    <p onClick={toggle}>{currentUserName}</p>
+                                    <p onClick={toggleView}>{currentUserName}</p>
                                     <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="Profile Picture" />
                                 </div>
                             </div>
@@ -93,14 +100,32 @@ const SideBar = styled.div`
 background-color: black;
 color: white;
 overflow-y: auto;
+overflow-x: hidden;
 height: 100%;
 border-radius: 2em;
+&::-webkit-scrollbar{
+    width: 0.4rem;
+    height: fit-content;
+    &-thumb{
+        background-color: gray;
+        border-radius: 1rem;
+    }
+    &-thumb:hover{
+        background-color: white;
+    }
+}
 h2{
     width: 100%;
     position: sticky;
     top: 0;
     text-align: center;
     background-color: gray;
+    transition: all 0.3s ease-in-out;
+    &:hover{
+        background-color: white;
+        color: black;
+        cursor: pointer;
+    }
 }
 .contacts{
     display: flex;
@@ -117,7 +142,7 @@ h2{
         border-radius: 50%;
         transition: all 400ms ease-in-out;
         &:hover{
-            box-shadow: 10px 10px 90px 10px white;
+            box-shadow: 0px 0px 20px white;
             cursor: pointer;
         }
         &:active{
@@ -128,13 +153,31 @@ h2{
             aspect-ratio: 3 / 2;
         }
         p{
-        margin-bottom: 0.5rem;
-        text-align: center;
-        color: white;
-        text-shadow: 5px 5px 10px white;
-        font-style: oblique;
-        letter-spacing: 0.3em;
-        text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            color: white;
+            text-shadow: 5px 5px 10px white;
+            font-style: oblique;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+    }
+    .selected{
+        padding: 0.5rem;
+        background-image: linear-gradient(to bottom, rgb(0, 0, 0) 25%, #ffffff 100%);        
+        border: 0.1rem solid white;
+        z-index: -1;
+        animation: select 0.5s both;
+        @keyframes select {
+            0%{
+                transform: translateY(0);
+            }
+            50%{
+                transform: translateY(1rem);
+            }
+            100%{
+                transform: translateY(0);
+            }
         }
     }
 }
