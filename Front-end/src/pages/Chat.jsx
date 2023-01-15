@@ -4,7 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { allUsersRoute } from "../utils/APIRoutes";
 import Contacts from "../components/Contacts";
+import Welcome from "../components/Welcome";
 import Test from "./test";
+import ChatContainer from "../components/ChatContainer";
 
 function Chat() {
     const [contacts, setContacts] = useState([])
@@ -45,8 +47,10 @@ function Chat() {
 
     const handleChatToggle = (contact) => {
         setCurrentChat(contact)
-        console.log(contact)
+        console.log(currentChat)
     }
+
+    console.log(currentChat)
 
     return (
         <>
@@ -74,6 +78,15 @@ function Chat() {
                         currentUser={currentUser}
                         toggleChat={handleChatToggle}
                     />
+                    {currentChat !== undefined ?
+                        <ChatContainer
+                            currentUser={currentUser}
+                            currentChat={currentChat}
+                        /> :
+                        <Welcome
+                            currentUser={currentUser}
+                        />}
+
                 </div>
             </Conatiner>
         </>
@@ -89,14 +102,14 @@ justify-content: center;
 align-items: center;
 gap: 1rem;
 .container{
-        border-radius: 50px;
-        height: 85%;
-        width: 85%;
-        border: 5px solid black;
-        background-color: #25160a84;
-        display: grid;
-        grid-template-columns: 1fr 2fr ;
-        overflow: hidden;
+    border-radius: 50px;
+    height: 85%;
+    width: 85%;
+    border: 5px solid black;
+    background-color: #25160a84;
+    display: grid;
+    grid-template-columns: 1fr 3fr ;
+    overflow: hidden;
     }
 `
 

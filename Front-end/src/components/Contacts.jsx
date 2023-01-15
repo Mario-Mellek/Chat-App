@@ -7,6 +7,7 @@ export default function Contacts({ contacts, currentUser, toggleChat }) {
     const [currentUserImage, setCurrentUserImage] = useState(undefined)
     const [currentlySelected, setCurrentlySelected] = useState(undefined)
     const [min, setMin] = useState(false)
+    const [selectedContact, setSelectedContact] = useState(undefined)
 
 
     useEffect(() => {
@@ -22,11 +23,25 @@ export default function Contacts({ contacts, currentUser, toggleChat }) {
     const changeChatWindow = (index, contact) => {
         setCurrentlySelected(index)
         toggleChat(contact)
+        setSelectedContact(contact)
     }
 
     const toggleView = () => {
         setMin((prev) => !prev);
     }
+
+    const mappedContacts = contacts.map((contact, index) => {
+        return (
+            <div
+                key={index}
+                onClick={() => { changeChatWindow(index, contact) }}
+                className={`contact ${currentlySelected === index ? 'selected' : ''}`}
+            >
+                <p>{contact.username}</p>
+                <img src={`data:image/svg+xml;base64,${contact.profilePic}`} alt="Profile Picture" />
+            </div>
+        )
+    })
 
     return (
         <>
@@ -38,32 +53,36 @@ export default function Contacts({ contacts, currentUser, toggleChat }) {
                                 className={min ? 'min' : 'max'}
                             >
                                 <h2
-                                    onClick={() => { setCurrentlySelected(undefined) }}
+                                    onClick={() => {
+                                        setCurrentlySelected(undefined)
+                                        toggleChat(undefined)
+                                        setSelectedContact(undefined)
+                                    }}
                                 >
                                     Chat App
                                 </h2>
                                 <br /><br />
                                 <div className="contacts">{
-                                    contacts.map((contact, index) => {
-                                        return (
-                                            <div
-                                                key={index}
-                                                onClick={() => { changeChatWindow(index, contact) }}
-                                                className={`contact ${currentlySelected === index ? 'selected' : ''}`}
-                                            >
-                                                <p>{contact.username}</p>
-                                                <img src={`data:image/svg+xml;base64,${contact.profilePic}`} alt="Profile Picture" />
-                                            </div>
-                                        )
-                                    })
+                                    mappedContacts
                                 }</div>
                             </SideBar>
                         </Container>
                         <UserContainer>
                             <div className={`current-user ${min ? 'big' : 'small'}`}>
                                 <div className="profile-pic">
-                                    <p onClick={toggleView}>{currentUserName}</p>
-                                    <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="Profile Picture" />
+                                    {selectedContact ?
+                                        <>
+                                            <div>
+                                                <p onClick={toggleView}>{selectedContact.username}</p>
+                                                <img src={`data:image/svg+xml;base64,${selectedContact.profilePic}`} alt="Profile Picture" />
+                                            </div>
+                                            <span>&gt;</span>
+                                        </> :
+                                        null}
+                                    <div>
+                                        <p onClick={toggleView}>{currentUserName}</p>
+                                        <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="Profile Picture" />
+                                    </div>
                                 </div>
                             </div>
                         </UserContainer>
@@ -227,11 +246,13 @@ width: auto;
     animation-delay: 0.3s;
 }
 @keyframes scale-up-right {
-    0% {
-    width: 0vw;
+    0%{
+        width: 0vh;
+        transform: scale(0);
     }
     100% {
-    width: 100vw;
+        transform: scale(1);
+        width: 90vw;
     }
 }
 .current-user{
@@ -240,13 +261,14 @@ width: auto;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    justify-content: start;
+    justify-content: space-around;
     gap: 2em;
     border-bottom: 2px solid black;
     border-bottom-left-radius: 2em;
     border-bottom-right-radius: 2em;
     transition: all 0.4s linear;
     animation: scale-in-h 0.5s ease both;
+    text-align: center;
     &:hover{
         background-color: transparent;
     }
@@ -260,7 +282,7 @@ width: auto;
     }
     p{
         margin-bottom: 0.5rem;
-        text-align: center;
+        /* text-align: center; */
         color: white;
         text-shadow: 5px 5px 10px white;
         font-style: oblique;
@@ -272,8 +294,6 @@ width: auto;
         }
     }
     img{
-        margin-left: 0.5em;
-        aspect-ratio: 1/1;
         width: 5rem;
         box-shadow: 10px 10px 90px 10px black;
         border-radius: 50%; 
