@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import Logout from './Logout'
 
-export default function Contacts({ contacts, currentUser, toggleChat }) {
+export default function Contacts({ contacts, currentUser, toggleChat, handleResize }) {
 
     const [currentUserName, setCurrentUserName] = useState(undefined)
     const [currentUserImage, setCurrentUserImage] = useState(undefined)
@@ -28,6 +29,7 @@ export default function Contacts({ contacts, currentUser, toggleChat }) {
 
     const toggleView = () => {
         setMin((prev) => !prev);
+        handleResize()
     }
 
     const mappedContacts = contacts.map((contact, index) => {
@@ -60,7 +62,10 @@ export default function Contacts({ contacts, currentUser, toggleChat }) {
                                     }}
                                 >
                                     Chat App
+                                    <br />
+                                    <Logout />
                                 </h2>
+
                                 <br /><br />
                                 <div className="contacts">{
                                     mappedContacts
@@ -70,15 +75,13 @@ export default function Contacts({ contacts, currentUser, toggleChat }) {
                         <UserContainer>
                             <div className={`current-user ${min ? 'big' : 'small'}`}>
                                 <div className="profile-pic">
-                                    {selectedContact ?
+                                    {selectedContact &&
                                         <>
                                             <div>
                                                 <p onClick={toggleView}>{selectedContact.username}</p>
                                                 <img src={`data:image/svg+xml;base64,${selectedContact.profilePic}`} alt="Profile Picture" />
                                             </div>
-                                            <span>&gt;</span>
-                                        </> :
-                                        null}
+                                        </>}
                                     <div>
                                         <p onClick={toggleView}>{currentUserName}</p>
                                         <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="Profile Picture" />
@@ -93,6 +96,7 @@ export default function Contacts({ contacts, currentUser, toggleChat }) {
                             <SideBar
                                 className={min ? 'min' : 'max'}
                             >
+                                <Logout />
                                 <br /><br /><br />
                                 <h3>No users to chat with?</h3>
                                 <br /><br />
@@ -210,7 +214,7 @@ text-align: center;
     animation: scale-out 0.5s ease both;
 }
 .max{
-    animation: scale-in 0.5s ease both;
+    animation: scale-in 0.5s 0.4s ease both;
 }
 @keyframes scale-out {
     0% {
@@ -236,10 +240,13 @@ text-align: center;
 `
 
 const UserContainer = styled.div`
-width: auto;
+/* width: auto; */
+display: flex;
+flex-direction: column;
 .big{
     animation: scale-up-right 0.5s ease-in-out both;
     animation-delay: 0.3s;
+    max-width: 94%;
 }
 .small{
     animation: scale-in-h 0.5s ease both;
@@ -247,36 +254,39 @@ width: auto;
 }
 @keyframes scale-up-right {
     0%{
-        width: 0vh;
+        /* width: auto; */
         transform: scale(0);
+        opacity: 0;
     }
     100% {
         transform: scale(1);
         width: 90vw;
+        opacity: 1;
     }
 }
 .current-user{
+    width: 85rem;
     .profile-pic{
-    background-color: #00000050;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: space-around;
-    gap: 2em;
-    border-bottom: 2px solid black;
-    border-bottom-left-radius: 2em;
-    border-bottom-right-radius: 2em;
-    transition: all 0.4s linear;
-    animation: scale-in-h 0.5s ease both;
-    text-align: center;
+        background-color: #00000050;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        border-bottom: 2px solid black;
+        border-bottom-left-radius: 2em;
+        border-bottom-right-radius: 2em;
+        transition: all 0.4s linear;
+        text-align: center;
+        color: white;
     &:hover{
         background-color: transparent;
     }
     @keyframes scale-in-h {
-        0%{
+        from{
             transform: scaleX(0);
         }
-        100%{
+        to{
             transform: scaleX(1);
         }
     }

@@ -18,11 +18,11 @@ function Test() {
     function drawEmoji() {
         const img = '😀';
 
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 4; i++) {
             trailRefs.current.push(React.createRef());
         }
 
-        return [...Array(20)].map((_item, index) => {
+        return [...Array(4)].map((_item, index) => {
             const ease = index * 0.05;
             return (
                 <div key={index}
@@ -36,7 +36,7 @@ function Test() {
     }
 
     function updateCollectedLettersPosition() {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 4; i++) {
             const xpos = lastMousePosition.current.x;
             const ypos = lastMousePosition.current.y;
             if (trailRefs.current[i].current)

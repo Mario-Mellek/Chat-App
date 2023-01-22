@@ -12,6 +12,7 @@ function Chat() {
     const [contacts, setContacts] = useState([])
     const [currentUser, setCurrentUser] = useState(undefined)
     const [currentChat, setCurrentChat] = useState(undefined)
+    const [minView, setMinView] = useState(false)
 
     const navigate = useNavigate()
 
@@ -47,41 +48,29 @@ function Chat() {
 
     const handleChatToggle = (contact) => {
         setCurrentChat(contact)
-        console.log(currentChat)
     }
 
-    console.log(currentChat)
+    const handleResize = () => {
+        setMinView((prev) => !prev)
+    }
+
 
     return (
         <>
             <Test />
             <Conatiner>
-                Chat <br />
-                <div
-                // style={{ display: 'none' }}
-                >
-                    <button onClick={() => {
-                        localStorage.clear();
-                        alert('Logged out');
-                        navigate('/login')
-                    }}>Log out</button>
-                    <br />
-                    <Link to="/Register">Register</Link>
-                    <br />
-                    <Link to="/Login">Login</Link>
-                    <br />
-                    <Link to="/setPic">Set a profile picture</Link>
-                </div>
                 <div className="container">
                     <Contacts
                         contacts={contacts}
                         currentUser={currentUser}
                         toggleChat={handleChatToggle}
+                        handleResize={handleResize}
                     />
                     {currentChat !== undefined ?
                         <ChatContainer
                             currentUser={currentUser}
                             currentChat={currentChat}
+                            minView={minView}
                         /> :
                         <Welcome
                             currentUser={currentUser}
@@ -101,15 +90,20 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 gap: 1rem;
+overflow: hidden;
+flex-wrap: wrap;
 .container{
     border-radius: 50px;
     height: 85%;
     width: 85%;
     border: 5px solid black;
     background-color: #25160a84;
-    display: grid;
-    grid-template-columns: 1fr 3fr ;
     overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
     }
 `
 

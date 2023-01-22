@@ -7,7 +7,11 @@ export default function Welcome({ currentUser }) {
 
     useEffect(() => {
         async function update() {
-            setUserName(await currentUser.username)
+            try {
+                setUserName(await currentUser.username)
+            } catch (error) {
+                console.warn(error)
+            }
         }
         update()
     }, [currentUser])
@@ -47,6 +51,6 @@ color: white;
 }
 img{
     border-radius: 40%;
-    width: 25rem;
+    width: 40%;
 }
 `

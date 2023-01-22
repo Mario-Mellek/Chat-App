@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./src/routes/userRoutes');
+const messageRoute = require('./src/routes/messageRoute');
 
 require('dotenv').config();
 const cors = require('cors');
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', userRoutes);
+app.use('/api/msg', messageRoute);
 
 app.get('/', (_req, res) => {
   res.send('Server Running');

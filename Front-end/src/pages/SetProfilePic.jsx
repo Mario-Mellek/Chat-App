@@ -46,8 +46,8 @@ export default function SetProfilePic() {
     }, [])
 
     async function postImage() {
-        const user = await JSON.parse(localStorage.getItem('Application User'));
         try {
+            let user = await JSON.parse(localStorage.getItem('Application User'));
             const { data } = await axios.post(`${setPicRoute}/${user._id}`, {
                 image: pics[selectedPic]
             })
