@@ -105,6 +105,12 @@ flex-wrap: wrap;
     justify-content: flex-start;
     flex-wrap: nowrap;
     }
+@media only screen and (600px > width) {
+    .container{
+        height: 90%;
+        width: 95%;
+    }
+}
 `
 
 export default Chat;

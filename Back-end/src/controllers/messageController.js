@@ -27,7 +27,7 @@ module.exports.getAllMessages = async (req, res) => {
       return {
         timeStamp: `${timeStamp.getFullYear()}/${
           timeStamp.getMonth() + 1
-        }/${timeStamp.getDate()} > ${timeStamp.getHours()}:${
+        }/${timeStamp.getDate()}\n${timeStamp.getHours()}:${
           (timeStamp.getMinutes() < 10 ? '0' : '') + timeStamp.getMinutes()
         }`,
         ownMessage: msg.data.sender == from,

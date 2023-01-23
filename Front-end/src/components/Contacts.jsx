@@ -61,7 +61,7 @@ export default function Contacts({ contacts, currentUser, toggleChat, handleResi
                                         setSelectedContact(undefined)
                                     }}
                                 >
-                                    Chat App
+                                    Logout
                                     <br />
                                     <Logout />
                                 </h2>
@@ -118,6 +118,43 @@ export default function Contacts({ contacts, currentUser, toggleChat, handleResi
     )
 }
 
+const Container = styled.div`
+height: 100%;
+overflow: hidden;
+text-align: center;
+.min{
+    animation: scale-out 0.5s ease both;
+}
+.max{
+    animation: scale-in 0.5s 0.4s ease both;
+}
+@keyframes scale-out {
+    0% {
+    transform: scaleY(1);
+    opacity: 1;
+    }
+    100% {
+    transform: scaleY(0);
+    opacity: 0;
+    display: none;
+    }
+}
+@keyframes scale-in {
+    0% {
+    transform: scaleY(0);
+    opacity: 0;
+    }
+    100% {
+    transform: scaleY(1);
+    opacity: 1;
+    }
+}
+@media only screen and (600px > width){
+    overflow: visible;
+    max-width: 28.5%;
+}
+`
+
 
 const SideBar = styled.div`
 background-color: black;
@@ -148,6 +185,9 @@ h2{
         background-color: white;
         color: black;
         cursor: pointer;
+    }
+    @media only screen and (600px > width) {
+        font-size: large;
     }
 }
 .contacts{
@@ -183,6 +223,10 @@ h2{
             font-style: oblique;
             letter-spacing: 0.3em;
             text-transform: uppercase;
+            @media only screen and (600px > width) {
+                font-size: 70%;
+                font-weight: 100;
+            }
         }
     }
     .selected{
@@ -202,39 +246,6 @@ h2{
                 transform: translateY(0);
             }
         }
-    }
-}
-`
-
-const Container = styled.div`
-height: 100%;
-overflow: hidden;
-text-align: center;
-.min{
-    animation: scale-out 0.5s ease both;
-}
-.max{
-    animation: scale-in 0.5s 0.4s ease both;
-}
-@keyframes scale-out {
-    0% {
-    transform: scaleY(1);
-    opacity: 1;
-    }
-    100% {
-    transform: scaleY(0);
-    opacity: 0;
-    display: none;
-    }
-}
-@keyframes scale-in {
-    0% {
-    transform: scaleY(0);
-    opacity: 0;
-    }
-    100% {
-    transform: scaleY(1);
-    opacity: 1;
     }
 }
 `
@@ -292,7 +303,6 @@ flex-direction: column;
     }
     p{
         margin-bottom: 0.5rem;
-        /* text-align: center; */
         color: white;
         text-shadow: 5px 5px 10px white;
         font-style: oblique;
@@ -308,6 +318,21 @@ flex-direction: column;
         box-shadow: 10px 10px 90px 10px black;
         border-radius: 50%; 
     }
+    }
+}
+@media only screen and (600px > width) {
+    width: 100%;
+    .current-user{
+        width: 100%;
+        .profile-pic{
+            margin: 0 5px;
+            p{
+                font-size: small;
+            }
+            img{
+                width: 4rem;
+            }
+        }
     }
 }
 `

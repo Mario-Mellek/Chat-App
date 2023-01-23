@@ -13,8 +13,8 @@ input {
 }
 
 body {
-  height: auto;
-  width: auto;
+  height: 0;
+  width: 0;
   background-color: gray;
   overflow: hidden;
 }

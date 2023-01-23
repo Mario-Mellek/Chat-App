@@ -69,6 +69,8 @@ justify-content: flex-start;
             svg{
                 color: yellow;
                 font-size: 1.5rem;
+                border-radius: 50%;
+                box-shadow: 4px 4px 10px black;
             }
             .EmojiPickerReact{
                 position: absolute;
@@ -99,6 +101,7 @@ justify-content: flex-start;
             font-size: 1.2rem;
             border-radius: 1rem;
             resize: none;
+            box-shadow: 4px 4px 10px black;
             &:focus{
                 background-color: black;
                 outline: 1px solid gray;
@@ -122,6 +125,7 @@ justify-content: flex-start;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: 4px 4px 10px black;
             svg{
                 font-size: large;
                 color: white;
@@ -134,4 +138,23 @@ justify-content: flex-start;
             width: 100%;
         }
     }
-    `
+    @media only screen and (600px > width) {
+        width: 75%;
+        .input-container textarea{
+            width: 100%;
+            height: 5rem;
+            background-color: transparent;
+            color: white;
+            padding-left: 1rem;
+            font-size: 1.2rem;
+            border-radius: 1rem;
+            resize: none;
+        }
+        .button-container .emoji .EmojiPickerReact{
+            position: absolute;
+            bottom: 200%;
+            left: -400%;
+        }
+    
+    }
+`
